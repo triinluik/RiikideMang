@@ -10,45 +10,45 @@ kontrolliVastus()
 kuvaTulemus()
  */
 public class Mang {
-    private ArrayList<Lipp> lipud;
+    private ArrayList<Pealinn> pealinnad;
     private int punktid;
     private Random random;
 
     public Mang() {
-        lipud = new ArrayList<>();
+        pealinnad = new ArrayList<>();
         random = new Random();
 
         punktid = 0;
-        lisaLipud();
+        lisaPealinnad();
     }
 
-    private void lisaLipud() {
-        lipud.add(new Lipp("Eesti", "\uD83C\uDDEA\uD83C\uDDEA"));
-        lipud.add(new Lipp("Kreeka", "\uD83C\uDDEC\uD83C\uDDF7"));
-        lipud.add(new Lipp("Ühendkuningriik", "\uD83C\uDDEC\uD83C\uDDE7"));
-        lipud.add(new Lipp("Prantsusmaa", "\uD83C\uDDEB\uD83C\uDDF7"));
-        lipud.add(new Lipp("Saksamaa", "\uD83C\uDDE9\uD83C\uDDEA"));
-        lipud.add(new Lipp("Holland", "\uD83C\uDDF3\uD83C\uDDF1"));
-        lipud.add(new Lipp("Taani", "\uD83C\uDDE9\uD83C\uDDF0"));
-        lipud.add(new Lipp("Norra", "\uD83C\uDDF3\uD83C\uDDF4"));
-        lipud.add(new Lipp("Rootsi", "\uD83C\uDDF8\uD83C\uDDEA"));
-        lipud.add(new Lipp("Soome", "\uD83C\uDDEB\uD83C\uDDEE"));
-        lipud.add(new Lipp("Läti", "\uD83C\uDDF1\uD83C\uDDFB"));
-        lipud.add(new Lipp("Leedu", "\uD83C\uDDF1\uD83C\uDDF9"));
-        lipud.add(new Lipp("Poola", "\uD83C\uDDF5\uD83C\uDDF1"));
-        lipud.add(new Lipp("Belgia", "\uD83C\uDDE7\uD83C\uDDEA"));
-        lipud.add(new Lipp("Hispaania", "\uD83C\uDDEA\uD83C\uDDF8"));
-        lipud.add(new Lipp("Portugal", "\uD83C\uDDF5\uD83C\uDDF9"));
+    private void lisaPealinnad() {
+        pealinnad.add(new Pealinn("Eesti", "Tallinn"));
+        pealinnad.add(new Pealinn("Kreeka", "Ateena"));
+        pealinnad.add(new Pealinn("Ühendkuningriik", "London"));
+        pealinnad.add(new Pealinn("Prantsusmaa", "Pariis"));
+        pealinnad.add(new Pealinn("Saksamaa", "Berliin"));
+        pealinnad.add(new Pealinn("Holland", "Amsterdam"));
+        pealinnad.add(new Pealinn("Taani", "Kopenhaagen"));
+        pealinnad.add(new Pealinn("Norra", "Oslo"));
+        pealinnad.add(new Pealinn("Rootsi", "Stockholm"));
+        pealinnad.add(new Pealinn("Soome", "Helsinki"));
+        pealinnad.add(new Pealinn("Läti", "Riia"));
+        pealinnad.add(new Pealinn("Leedu", "Vilnius"));
+        pealinnad.add(new Pealinn("Poola", "Varssavi"));
+        pealinnad.add(new Pealinn("Belgia", "Brüssel"));
+        pealinnad.add(new Pealinn("Hispaania", "Madrid"));
+        pealinnad.add(new Pealinn("Portugal", "Lissabon"));
     }
 
     public void alustaMäng() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Tere tulemast lippude äraarvamisemängu!🔥");
-        System.out.println("Sulle näidatakse lippu ja sa pead ära arvama, mis riigi lipuga on tegemist.");
+        System.out.println("Tere tulemast pealinnade äraarvamisemängu!🔥");
+        System.out.println("Sulle näidatakse pealinna nime ja sa pead ära arvama, mis riigi pealinnaga on tegemist.");
         System.out.println();
 
-        for (int i = 1; i <= lipud.size(); i++) {
+        for (int i = 1; i <= pealinnad.size(); i++) {
             System.out.println(i + ". küsimus:");
             esitaKüsimus(sc);
             System.out.println();
@@ -56,14 +56,14 @@ public class Mang {
     }
 
     private void esitaKüsimus(Scanner sc) {
-        Lipp õigeLipp = valiJuhuslikLipp();
-        ArrayList<Lipp> variandid = looVariandid(õigeLipp);
+        Pealinn õigePealinn = valiJuhuslikPealinn();
+        ArrayList<Pealinn> variandid = looVariandid(õigePealinn);
 
-        System.out.println("Mis riigi lipp on " + õigeLipp.getEmoji() + "?");
+        System.out.println("Mis riigi pealinn on " + õigePealinn.getPealinn() + "?");
         int õigeVastus = -1;
         for (int i = 0; i < variandid.size(); i++) {
             System.out.println((i + 1) + ". " + variandid.get(i).getRiigiNimi());
-            if (variandid.get(i).getRiigiNimi().equals(õigeLipp.getRiigiNimi())) {
+            if (variandid.get(i).getRiigiNimi().equals(õigePealinn.getRiigiNimi())) {
                 õigeVastus = i + 1;
             }
         }
@@ -74,22 +74,22 @@ public class Mang {
             System.out.println("Õige!");
             punktid++;
         } else {
-            System.out.println("Vale! Õige vastus on hoopis " + õigeLipp.getRiigiNimi() + "!");
+            System.out.println("Vale! Õige vastus on hoopis " + õigePealinn.getRiigiNimi() + "!");
         }
     }
 
-    private ArrayList<Lipp> looVariandid(Lipp õigeLipp) {
-        ArrayList<Lipp> lippudeKoopia = new ArrayList<>(lipud);
-        Collections.shuffle(lippudeKoopia);
+    private ArrayList<Pealinn> looVariandid(Pealinn õigePealinn) {
+        ArrayList<Pealinn> pealinnKoopia = new ArrayList<>(pealinnad);
+        Collections.shuffle(pealinnKoopia);
 
-        ArrayList<Lipp> variandid = new ArrayList<>();
-        variandid.add(õigeLipp);
+        ArrayList<Pealinn> variandid = new ArrayList<>();
+        variandid.add(õigePealinn);
 
         int i = 0;
         while (variandid.size() < 4) {
-            Lipp lipp = lippudeKoopia.get(i);
-            if (!variandid.contains(lipp)) {
-                variandid.add(lipp);
+            Pealinn pealinn = pealinnKoopia.get(i);
+            if (!variandid.contains(pealinn)) {
+                variandid.add(pealinn);
             }
             i++;
         }
@@ -97,9 +97,9 @@ public class Mang {
         return variandid;
     }
 
-    private Lipp valiJuhuslikLipp() {
-        int indeks = random.nextInt(lipud.size());
-        return lipud.get(indeks);
+    private Pealinn valiJuhuslikPealinn() {
+        int indeks = random.nextInt(pealinnad.size());
+        return pealinnad.get(indeks);
     }
     public int getPunktid() {
         return punktid;
@@ -107,11 +107,11 @@ public class Mang {
     public void setPunktid(int punktid) {
         this.punktid = punktid;
     }
-    public ArrayList<Lipp> getLipud() {
-        return lipud;
+    public ArrayList<Pealinn> getPealinnad() {
+        return pealinnad;
     }
-    public void setLipud(ArrayList<Lipp> lipud) {
-        this.lipud = lipud;
+    public void setPealinnad(ArrayList<Pealinn> pealinnad) {
+        this.pealinnad = pealinnad;
     }
 
 }

@@ -1,32 +1,32 @@
 /* Instances: riik, vihje, kontinent
 Meetodid: konstruktor, getterid-setterid, toString()
  */
-public class Lipp {
+public class Pealinn {
     private String riigiNimi;
-    private String emoji;
+    private String pealinn;
     //private String pildiTee hiljem juurde + konstruktorisse ja getter/setter
 
-    public Lipp(String riigiNimi, String emoji) {
+    public Pealinn(String riigiNimi, String pealinn) {
         this.riigiNimi = riigiNimi;
-        this.emoji = emoji;
+        this.pealinn = pealinn;
     }
 
     public String getRiigiNimi() {
         return riigiNimi;
     }
 
-    public String getEmoji() {
-        return emoji;
+    public String getPealinn() {
+        return pealinn;
     }
 
     public void setRiigiNimi(String riigiNimi) {
         this.riigiNimi = riigiNimi;
     }
 
-    public void setEmoji(String emoji) {
-        this.emoji = emoji;
+    public void setPealinn(String pealinn) {
+        this.pealinn = pealinn;
     }
     public String toString() {
-        return riigiNimi + " " + emoji;
+        return riigiNimi + " " + pealinn;
     }
 }
