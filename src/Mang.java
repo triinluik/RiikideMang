@@ -1,3 +1,5 @@
+// Mängu loogika
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -16,6 +18,7 @@ public class Mang {
         lisaPealinnad();
     }
 
+    // Abimeetod, mis lisab pealinnad järjendisse
     private void lisaPealinnad() {
         pealinnad.add(new Pealinn("Eesti", "Tallinn"));
         pealinnad.add(new Pealinn("Kreeka", "Ateena"));
@@ -35,6 +38,7 @@ public class Mang {
         pealinnad.add(new Pealinn("Portugal", "Lissabon"));
     }
 
+    // Käivitab mängu
     public void alustaMäng() {
         Scanner sc = new Scanner(System.in);
 
@@ -62,6 +66,7 @@ public class Mang {
         }
     }
 
+    // Kuvab küsimuse ja loeb kasutaja antud vastuse
     private boolean esitaKüsimus(Scanner sc) {
         Kusimus kusimus = looKüsimus();
 
@@ -83,6 +88,7 @@ public class Mang {
         }
     }
 
+    //Loob uue küsimuse isendi
     private Kusimus looKüsimus() {
         Pealinn õigePealinn = valiJuhuslikPealinn();
         ArrayList<Pealinn> variandid = looVariandid(õigePealinn);
@@ -95,6 +101,7 @@ public class Mang {
         return new Kusimus(õigePealinn, variandid, õigeVastus);
     }
 
+    //Genereerib vastusevariandid
     private ArrayList<Pealinn> looVariandid(Pealinn õigePealinn) {
         ArrayList<Pealinn> pealinnKoopia = new ArrayList<>(pealinnad);
         Collections.shuffle(pealinnKoopia);
@@ -114,6 +121,7 @@ public class Mang {
         return variandid;
     }
 
+    // Valib juhusliku pealinna
     private Pealinn valiJuhuslikPealinn() {
         int indeks = random.nextInt(pealinnad.size());
         return pealinnad.get(indeks);
