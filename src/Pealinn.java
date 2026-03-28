@@ -1,6 +1,3 @@
-/* Instances: riik, vihje, kontinent
-Meetodid: konstruktor, getterid-setterid, toString()
- */
 public class Pealinn {
     private String riigiNimi;
     private String pealinn;

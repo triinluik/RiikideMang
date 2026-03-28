@@ -3,12 +3,6 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
-/* Mängu loogika
-alustamang()
-esitaKusimus()
-kontrolliVastus()
-kuvaTulemus()
- */
 public class Mang {
     private ArrayList<Pealinn> pealinnad;
     private int punktid;
@@ -47,35 +41,58 @@ public class Mang {
         System.out.println("Tere tulemast pealinnade äraarvamisemängu!🔥");
         System.out.println("Sulle näidatakse pealinna nime ja sa pead ära arvama, mis riigi pealinnaga on tegemist.");
         System.out.println();
+        while (true) {
+            for (int i = 1; i <= pealinnad.size(); i++) {
+                System.out.println(i + ". küsimus:");
+                boolean õigeVastus = esitaKüsimus(sc);
+                System.out.println();
 
-        for (int i = 1; i <= pealinnad.size(); i++) {
-            System.out.println(i + ". küsimus:");
-            esitaKüsimus(sc);
-            System.out.println();
+                if (!õigeVastus) {
+                    System.out.println("Vastasid valesti. Alustame mängu uuesti!");
+                    punktid = 0;
+                    System.out.println();
+                    break;
+                }
+            }
+            if (punktid == pealinnad.size()) {
+                System.out.println("Vastasid kõikidele küsimustele õigesti ja kogusid kokku " + punktid + " punkti!\uD83C\uDF89");
+                System.out.println();
+                break;
+            }
         }
     }
 
-    private void esitaKüsimus(Scanner sc) {
+    private boolean esitaKüsimus(Scanner sc) {
+        Kusimus kusimus = looKüsimus();
+
+        System.out.println(kusimus.getKüsimuseTekst());
+
+        for (int i = 0; i < kusimus.getVariandid().size(); i++) {
+            System.out.println((i + 1) + ". " + kusimus.getVariandid().get(i).getRiigiNimi());
+        }
+        System.out.println("Sisesta vastuse number: ");
+        int vastus = sc.nextInt();
+        if (kusimus.onÕigeVastus(vastus)) {
+            System.out.println("Õige!");
+            punktid++;
+            return true;
+        } else {
+            System.out.println("Vale! Õige vastus on hoopis " + kusimus.getÕigePealinn().getRiigiNimi());
+            System.out.println("Kogusid kokku " + punktid + " punkti!\uD83C\uDF89");
+            return false;
+        }
+    }
+
+    private Kusimus looKüsimus() {
         Pealinn õigePealinn = valiJuhuslikPealinn();
         ArrayList<Pealinn> variandid = looVariandid(õigePealinn);
-
-        System.out.println("Mis riigi pealinn on " + õigePealinn.getPealinn() + "?");
         int õigeVastus = -1;
         for (int i = 0; i < variandid.size(); i++) {
-            System.out.println((i + 1) + ". " + variandid.get(i).getRiigiNimi());
             if (variandid.get(i).getRiigiNimi().equals(õigePealinn.getRiigiNimi())) {
                 õigeVastus = i + 1;
             }
         }
-        System.out.println("Sisesta vastuse number: ");
-        int vastus = sc.nextInt();
-
-        if (vastus == õigeVastus) {
-            System.out.println("Õige!");
-            punktid++;
-        } else {
-            System.out.println("Vale! Õige vastus on hoopis " + õigePealinn.getRiigiNimi() + "!");
-        }
+        return new Kusimus(õigePealinn, variandid, õigeVastus);
     }
 
     private ArrayList<Pealinn> looVariandid(Pealinn õigePealinn) {
@@ -101,15 +118,19 @@ public class Mang {
         int indeks = random.nextInt(pealinnad.size());
         return pealinnad.get(indeks);
     }
+
     public int getPunktid() {
         return punktid;
     }
+
     public void setPunktid(int punktid) {
         this.punktid = punktid;
     }
+
     public ArrayList<Pealinn> getPealinnad() {
         return pealinnad;
     }
+
     public void setPealinnad(ArrayList<Pealinn> pealinnad) {
         this.pealinnad = pealinnad;
     }
