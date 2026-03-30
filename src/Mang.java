@@ -132,7 +132,7 @@ public class Mang {
     // Valib juhusliku pealinna
     private Pealinn valiJuhuslikPealinn() {
         int indeks = random.nextInt(pealinnad.size());
-        return pealinnad.get(indeks);
+        return pealinnad.remove(indeks);
     }
 
     public int getPunktid() {
