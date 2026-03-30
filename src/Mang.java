@@ -36,6 +36,14 @@ public class Mang {
         pealinnad.add(new Pealinn("Belgia", "Brüssel"));
         pealinnad.add(new Pealinn("Hispaania", "Madrid"));
         pealinnad.add(new Pealinn("Portugal", "Lissabon"));
+        pealinnad.add(new Pealinn("Itaalia","Rooma"));
+        pealinnad.add(new Pealinn("Tšehhi","Praha"));
+        pealinnad.add(new Pealinn("Austria","Viin"));
+        pealinnad.add(new Pealinn("Iirimaa", "Dublin"));
+        pealinnad.add(new Pealinn("Rumeenia", "Bukarest"));
+        pealinnad.add(new Pealinn("Bulgaaria", "Sofia"));
+        pealinnad.add(new Pealinn("Island", "Reykjavík"));
+        pealinnad.add(new Pealinn("Slovakkia", "Bratislava"));
     }
 
     // Käivitab mängu
