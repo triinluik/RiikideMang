@@ -54,7 +54,7 @@ public class Mang {
         System.out.println("Sulle näidatakse pealinna nime ja sa pead ära arvama, mis riigi pealinnaga on tegemist.");
         System.out.println();
         while (true) {
-            for (int i = 1; i <= pealinnad.size(); i++) {
+            for (int i = 1; i <= 15; i++) {
                 System.out.println(i + ". küsimus:");
                 boolean õigeVastus = esitaKüsimus(sc);
                 System.out.println();
@@ -63,10 +63,12 @@ public class Mang {
                     System.out.println("Vastasid valesti. Alustame mängu uuesti!");
                     punktid = 0;
                     System.out.println();
+                    pealinnad.clear();
+                    lisaPealinnad();
                     break;
                 }
             }
-            if (punktid == pealinnad.size()) {
+            if (punktid == 15) {
                 System.out.println("Vastasid kõikidele küsimustele õigesti ja kogusid kokku " + punktid + " punkti!\uD83C\uDF89");
                 System.out.println();
                 break;
