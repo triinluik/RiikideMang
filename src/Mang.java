@@ -36,9 +36,9 @@ public class Mang {
         pealinnad.add(new Pealinn("Belgia", "Brüssel"));
         pealinnad.add(new Pealinn("Hispaania", "Madrid"));
         pealinnad.add(new Pealinn("Portugal", "Lissabon"));
-        pealinnad.add(new Pealinn("Itaalia","Rooma"));
-        pealinnad.add(new Pealinn("Tšehhi","Praha"));
-        pealinnad.add(new Pealinn("Austria","Viin"));
+        pealinnad.add(new Pealinn("Itaalia", "Rooma"));
+        pealinnad.add(new Pealinn("Tšehhi", "Praha"));
+        pealinnad.add(new Pealinn("Austria", "Viin"));
         pealinnad.add(new Pealinn("Iirimaa", "Dublin"));
         pealinnad.add(new Pealinn("Rumeenia", "Bukarest"));
         pealinnad.add(new Pealinn("Bulgaaria", "Sofia"));
@@ -53,6 +53,8 @@ public class Mang {
         System.out.println("Tere tulemast pealinnade äraarvamisemängu!🔥");
         System.out.println("Sulle näidatakse pealinna nime ja sa pead ära arvama, mis riigi pealinnaga on tegemist.");
         System.out.println();
+        // Välimine tsükkel võimaldab mängu vale vastuse korral uuesti alustada
+        // Seda peaks loetavamaks kirjutama
         while (true) {
             for (int i = 1; i <= 15; i++) {
                 System.out.println(i + ". küsimus:");
@@ -86,7 +88,23 @@ public class Mang {
             System.out.println((i + 1) + ". " + kusimus.getVariandid().get(i).getRiigiNimi());
         }
         System.out.println("Sisesta vastuse number: ");
-        int vastus = sc.nextInt();
+
+        int vastus;
+        while (true) {
+            if (!sc.hasNextInt()) {
+                System.out.println("Palun sisesta number vahemikus 1-4.");
+                sc.next();
+                continue;
+            }
+
+            vastus = sc.nextInt();
+
+            if (vastus >= 1 && vastus <= 4) {
+                break;
+            }
+            System.out.println("Palun sisesta number vahemikus 1-4.");
+        }
+
         if (kusimus.onÕigeVastus(vastus)) {
             System.out.println("Õige!");
             punktid++;
