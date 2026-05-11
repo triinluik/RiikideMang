@@ -54,8 +54,9 @@ public class Mang {
         System.out.println("Sulle näidatakse pealinna nime ja sa pead ära arvama, mis riigi pealinnaga on tegemist.");
         System.out.println();
         // Välimine tsükkel võimaldab mängu vale vastuse korral uuesti alustada
-        // Seda peaks loetavamaks kirjutama
-        while (true) {
+        boolean mängKäib = true;
+
+        while (mängKäib) {
             for (int i = 1; i <= 15; i++) {
                 System.out.println(i + ". küsimus:");
                 boolean õigeVastus = esitaKüsimus(sc);
@@ -63,17 +64,20 @@ public class Mang {
 
                 if (!õigeVastus) {
                     System.out.println("Vastasid valesti. Alustame mängu uuesti!");
+
                     punktid = 0;
                     System.out.println();
                     pealinnad.clear();
                     lisaPealinnad();
+                    // Kui vastus on vale, siis katkestab küsimuste küsimuse ja alustab uuesti
                     break;
                 }
             }
             if (punktid == 15) {
                 System.out.println("Vastasid kõikidele küsimustele õigesti ja kogusid kokku " + punktid + " punkti!\uD83C\uDF89");
                 System.out.println();
-                break;
+                // Kui kõikidele küsimustele on vastatud, siis paneb programmi kinni.
+                mängKäib = false;
             }
         }
     }
