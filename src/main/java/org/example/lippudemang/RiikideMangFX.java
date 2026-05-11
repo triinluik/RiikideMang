@@ -4,9 +4,12 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.Optional;
 
 // Uus UI'ga peaklass
 public class RiikideMangFX extends Application {
@@ -109,6 +112,12 @@ public class RiikideMangFX extends Application {
         if (praeguneKusimus == null) {
             küsimusLabel.setText("Palju õnne, vastasid kõikidele küsimustele õigesti!");
             tagasisideLabel.setText("Mäng sai läbi. Kogusid kokku " + mang.getPunktid() + " punkti.");
+            // Küsib kasutajalt nime tulemuste salvestamiseks
+            String nimi = küsiNimi();
+
+            if (nimi != null) {
+                mang.salvestaPunktid(nimi);
+            }
             // Näitab uue mängu nuppu
             uusMängNupp.setDisable(false);
             uusMängNupp.setVisible(true);
@@ -129,6 +138,7 @@ public class RiikideMangFX extends Application {
         // Uuendab punkte
         punktidLabel.setText("Punktid: " + mang.getPunktid());
     }
+
     //Kontrollib kasutaja vastust
     private void kontrolliVastus(int vastus) {
         if (kasVastatud || praeguneKusimus == null) {
@@ -152,7 +162,24 @@ public class RiikideMangFX extends Application {
             for (Button nupp : vastuseNupud) {
                 nupp.setDisable(true);
             }
+            // Küsib kasutajalt nime punktide salvestamiseks
+            String nimi = küsiNimi();
+
+            if (nimi != null) {
+                mang.salvestaPunktid(nimi);
+            }
             uusMängNupp.setVisible(true);
         }
+    }
+    private String küsiNimi() {
+        TextInputDialog dialoog = new TextInputDialog();
+        dialoog.setTitle("Sisesta oma nimi või initsiaalid tulemuse salvestamiseks.");
+        dialoog.setContentText("Nimi:");
+
+        Optional<String> tulemus = dialoog.showAndWait();
+
+        if (tulemus.isPresent() && !tulemus.get().isBlank()) {
+            return tulemus.get();
+        } return null;
     }
 }
