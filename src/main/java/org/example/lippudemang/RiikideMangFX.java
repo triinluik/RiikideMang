@@ -87,6 +87,7 @@ public class RiikideMangFX extends Application {
         kuvaUusKüsimus();
     }
 
+    // Alustab uue mängu
     private void alustaUutMängu() {
         mang.alustaUuesti();
         kasVastatud = false;
@@ -112,12 +113,8 @@ public class RiikideMangFX extends Application {
         if (praeguneKusimus == null) {
             küsimusLabel.setText("Palju õnne, vastasid kõikidele küsimustele õigesti!");
             tagasisideLabel.setText("Mäng sai läbi. Kogusid kokku " + mang.getPunktid() + " punkti.");
-            // Küsib kasutajalt nime tulemuste salvestamiseks
-            String nimi = küsiNimi();
-
-            if (nimi != null) {
-                mang.salvestaPunktid(nimi);
-            }
+            // Kutsub välja meetodi tulemuse salvestamiseks
+            salvestaTulemus();
             // Näitab uue mängu nuppu
             uusMängNupp.setDisable(false);
             uusMängNupp.setVisible(true);
@@ -162,24 +159,34 @@ public class RiikideMangFX extends Application {
             for (Button nupp : vastuseNupud) {
                 nupp.setDisable(true);
             }
-            // Küsib kasutajalt nime punktide salvestamiseks
-            String nimi = küsiNimi();
+            // Kutsub välja meetodi tulemuse salvestamiseks
+            salvestaTulemus();
 
-            if (nimi != null) {
-                mang.salvestaPunktid(nimi);
-            }
             uusMängNupp.setVisible(true);
         }
     }
+
+    // Meetod tulemuse salvestamiseks
+    private void salvestaTulemus() {
+        String nimi = küsiNimi();
+
+        if (nimi != null) {
+            mang.salvestaPunktid(nimi);
+        }
+    }
+
+    // Meetod kasutajalt tema nime küsimiseks
     private String küsiNimi() {
         TextInputDialog dialoog = new TextInputDialog();
-        dialoog.setTitle("Sisesta oma nimi või initsiaalid tulemuse salvestamiseks.");
+        dialoog.setTitle("Tulemuse salvestamine");
+        dialoog.setHeaderText("Sisesta oma nimi või initsiaalid");
         dialoog.setContentText("Nimi:");
 
         Optional<String> tulemus = dialoog.showAndWait();
 
         if (tulemus.isPresent() && !tulemus.get().isBlank()) {
-            return tulemus.get();
-        } return null;
+            return tulemus.get().trim();
+        }
+        return null;
     }
 }

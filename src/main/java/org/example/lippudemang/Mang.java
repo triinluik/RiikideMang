@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Mang {
@@ -28,7 +27,7 @@ public class Mang {
         lisaPealinnad();
         küsimataPealinnad.addAll(kõikPealinnad);
     }
-
+    // Getterid ja setterid
     public int getPunktid() {
         return punktid;
     }
