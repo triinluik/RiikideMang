@@ -2,50 +2,47 @@ package org.example.lippudemang;
 
 // Mängu loogika
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Mang {
-    private ArrayList<Pealinn> pealinnad;
+    private ArrayList<Pealinn> kõikPealinnad; //Kõik pealinnad
+    private ArrayList<Pealinn> küsimataPealinnad; // Veel küsimata pealinnad
     private int punktid;
     private Random random;
 
     public Mang() {
-        pealinnad = new ArrayList<>();
+        kõikPealinnad = new ArrayList<>();
+        küsimataPealinnad = new ArrayList<>();
         random = new Random();
 
         punktid = 0;
         lisaPealinnad();
+        küsimataPealinnad.addAll(kõikPealinnad);
     }
 
-    // Abimeetod, mis lisab pealinnad järjendisse
+    // Abimeetod, mis loeb pealinnad txt failist ja lisab need järjendisse
     private void lisaPealinnad() {
-        pealinnad.add(new Pealinn("Eesti", "Tallinn"));
-        pealinnad.add(new Pealinn("Kreeka", "Ateena"));
-        pealinnad.add(new Pealinn("Ühendkuningriik", "London"));
-        pealinnad.add(new Pealinn("Prantsusmaa", "Pariis"));
-        pealinnad.add(new Pealinn("Saksamaa", "Berliin"));
-        pealinnad.add(new Pealinn("Holland", "Amsterdam"));
-        pealinnad.add(new Pealinn("Taani", "Kopenhaagen"));
-        pealinnad.add(new Pealinn("Norra", "Oslo"));
-        pealinnad.add(new Pealinn("Rootsi", "Stockholm"));
-        pealinnad.add(new Pealinn("Soome", "Helsinki"));
-        pealinnad.add(new Pealinn("Läti", "Riia"));
-        pealinnad.add(new Pealinn("Leedu", "Vilnius"));
-        pealinnad.add(new Pealinn("Poola", "Varssavi"));
-        pealinnad.add(new Pealinn("Belgia", "Brüssel"));
-        pealinnad.add(new Pealinn("Hispaania", "Madrid"));
-        pealinnad.add(new Pealinn("Portugal", "Lissabon"));
-        pealinnad.add(new Pealinn("Itaalia", "Rooma"));
-        pealinnad.add(new Pealinn("Tšehhi", "Praha"));
-        pealinnad.add(new Pealinn("Austria", "Viin"));
-        pealinnad.add(new Pealinn("Iirimaa", "Dublin"));
-        pealinnad.add(new Pealinn("Rumeenia", "Bukarest"));
-        pealinnad.add(new Pealinn("Bulgaaria", "Sofia"));
-        pealinnad.add(new Pealinn("Island", "Reykjavík"));
-        pealinnad.add(new Pealinn("Slovakkia", "Bratislava"));
+        try (Scanner sc = new Scanner(new File("Pealinnad.txt"))) {
+
+            while (sc.hasNextLine()) {
+                String rida = sc.nextLine();
+
+                String[] osad = rida.split(";");
+
+                String riik = osad[0];
+                String pealinn = osad[1];
+
+                kõikPealinnad.add(new Pealinn(riik, pealinn));
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Viga! Sellist faili ei leitud!");
+        }
     }
 
     // Käivitab mängu
@@ -71,7 +68,7 @@ public class Mang {
                     break;
                 }
             }
-            if (punktid == 15) {
+            if (küsimusedOtsas()) {
                 System.out.println("Vastasid kõikidele küsimustele õigesti ja kogusid kokku " + punktid + " punkti!\uD83C\uDF89");
                 System.out.println();
                 // Kui kõikidele küsimustele on vastatud, siis paneb programmi kinni.
@@ -132,7 +129,8 @@ public class Mang {
 
     //Genereerib vastusevariandid
     private ArrayList<Pealinn> looVariandid(Pealinn õigePealinn) {
-        ArrayList<Pealinn> pealinnKoopia = new ArrayList<>(pealinnad);
+        ArrayList<Pealinn> pealinnKoopia = new ArrayList<>(kõikPealinnad);
+        pealinnKoopia.remove(õigePealinn);
         Collections.shuffle(pealinnKoopia);
 
         ArrayList<Pealinn> variandid = new ArrayList<>();
@@ -140,10 +138,7 @@ public class Mang {
 
         int i = 0;
         while (variandid.size() < 4) {
-            Pealinn pealinn = pealinnKoopia.get(i);
-            if (!variandid.contains(pealinn)) {
-                variandid.add(pealinn);
-            }
+           variandid.add(pealinnKoopia.get(i));
             i++;
         }
         Collections.shuffle(variandid);
@@ -152,12 +147,19 @@ public class Mang {
 
     // Valib juhusliku pealinna
     private Pealinn valiJuhuslikPealinn() {
-        int indeks = random.nextInt(pealinnad.size());
-        return pealinnad.remove(indeks);
+        int indeks = random.nextInt(küsimataPealinnad.size());
+        return küsimataPealinnad.remove(indeks);
+    }
+    // Kontrollib, kas pealinnad järjendis on veel pealinnu
+    public boolean küsimusedOtsas() {
+        return küsimataPealinnad.isEmpty();
     }
 
     // Tagastab uue küsimuse objekti
     public Kusimus järgmineKüsimus() {
+        if (küsimusedOtsas()) {
+            return null;
+        }
         return looKüsimus();
     }
 
@@ -173,8 +175,8 @@ public class Mang {
     // Alustab mängu vale vastuse korral uuesti
     public void alustaUuesti() {
         punktid = 0;
-        pealinnad.clear();
-        lisaPealinnad();
+        küsimataPealinnad.clear();
+        küsimataPealinnad.addAll(kõikPealinnad);
     }
 
     public int getPunktid() {
@@ -185,11 +187,11 @@ public class Mang {
         this.punktid = punktid;
     }
 
-    public ArrayList<Pealinn> getPealinnad() {
-        return pealinnad;
+    public ArrayList<Pealinn> getKõikPealinnad() {
+        return kõikPealinnad;
     }
 
-    public void setPealinnad(ArrayList<Pealinn> pealinnad) {
-        this.pealinnad = pealinnad;
+    public void setKõikPealinnad(ArrayList<Pealinn> kõikPealinnad) {
+        this.kõikPealinnad = kõikPealinnad;
     }
 }
