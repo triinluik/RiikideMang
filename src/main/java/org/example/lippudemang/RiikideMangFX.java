@@ -61,6 +61,7 @@ public class RiikideMangFX extends Application {
         // Lisab elemendid aknasse
         juur.getChildren().addAll(
                 new Label("Riikide mäng"),
+                new Label("Vali õige riik. Vastata saab hiirega või klahvidega 1–4."),
                 küsimusLabel,
                 nuppudePaneel,
                 punktidLabel,
@@ -77,6 +78,14 @@ public class RiikideMangFX extends Application {
                 case DIGIT2 -> kontrolliVastus(2);
                 case DIGIT3 -> kontrolliVastus(3);
                 case DIGIT4 -> kontrolliVastus(4);
+
+                // Kui vajutatakse muid numbreid
+                case DIGIT5, DIGIT6, DIGIT7,
+                     DIGIT8, DIGIT9, DIGIT0 ->
+
+                        tagasisideLabel.setText(
+                                "Palun vali number vahemikus 1–4."
+                        );
             }
         });
 
@@ -129,7 +138,8 @@ public class RiikideMangFX extends Application {
         //Kuvad vastusevariandid nuppudel
         for (int i = 0; i < vastuseNupud.length; i++) {
             vastuseNupud[i].setText(
-                    praeguneKusimus.getVariandid().get(i).getRiigiNimi()
+                    (i + 1) + ". "
+                            + praeguneKusimus.getVariandid().get(i).getRiigiNimi()
             );
         }
         // Uuendab punkte
