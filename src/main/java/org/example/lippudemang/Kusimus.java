@@ -4,9 +4,9 @@ import java.util.ArrayList;
 // Hoiab konkreetse küsimuse andmeid
 
 public class Kusimus {
-    private Pealinn õigePealinn;
-    private ArrayList<Pealinn> variandid;
-    private int õigeVastus;
+    private final Pealinn õigePealinn;
+    private final ArrayList<Pealinn> variandid;
+    private final int õigeVastus;
 
     // Konstruktor
     public Kusimus(Pealinn õigePealinn, ArrayList<Pealinn> variandid, int õigeVastus) {
@@ -22,10 +22,6 @@ public class Kusimus {
 
     public ArrayList<Pealinn> getVariandid() {
         return variandid;
-    }
-
-    public int getÕigeVastus() {
-        return õigeVastus;
     }
 
     // Tagastab küsimuse teksti

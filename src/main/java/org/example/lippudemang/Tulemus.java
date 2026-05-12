@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Tulemus {
-    private String nimi;
-    private int punktid;
-    private LocalDateTime aeg;
+    private final String nimi;
+    private final int punktid;
+    private final LocalDateTime aeg;
     private static final DateTimeFormatter VORMISTUS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); // Konstant
 
     // Konstruktor
@@ -15,18 +15,11 @@ public class Tulemus {
         this.punktid = punktid;
         this.aeg = aeg;
     }
-    // Getterid
-    public String getNimi() {
-        return nimi;
-    }
-
+    // Getter
     public int getPunktid() {
         return punktid;
     }
 
-    public LocalDateTime getAeg() {
-        return aeg;
-    }
     // Teisendab tulemuse failireaks
     public String tulemusFailireaks() {
         return aeg.format(VORMISTUS) + ";" + nimi + ";" + punktid;

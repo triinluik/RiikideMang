@@ -13,9 +13,9 @@ import java.util.*;
 
 public class Mang {
     private ArrayList<Pealinn> kõikPealinnad; //Kõik pealinnad
-    private ArrayList<Pealinn> küsimataPealinnad; // Veel küsimata pealinnad
+    private final ArrayList<Pealinn> küsimataPealinnad; // Veel küsimata pealinnad
     private int punktid;
-    private Random random;
+    private final Random random;
     private static final String TULEMUSTE_FAIL = "tulemused.txt"; //Konstant
 
     public Mang() {
@@ -30,18 +30,6 @@ public class Mang {
     // Getterid ja setterid
     public int getPunktid() {
         return punktid;
-    }
-
-    public void setPunktid(int punktid) {
-        this.punktid = punktid;
-    }
-
-    public ArrayList<Pealinn> getKõikPealinnad() {
-        return kõikPealinnad;
-    }
-
-    public void setKõikPealinnad(ArrayList<Pealinn> kõikPealinnad) {
-        this.kõikPealinnad = kõikPealinnad;
     }
 
     // Abimeetod, mis loeb pealinnad txt failist ja lisab need järjendisse
@@ -61,75 +49,6 @@ public class Mang {
 
         } catch (FileNotFoundException e) {
             System.out.println("Viga! Sellist faili ei leitud!");
-        }
-    }
-
-    // Käivitab mängu
-    public void alustaMäng() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("Tere tulemast pealinnade äraarvamisemängu!🔥");
-        System.out.println("Sulle näidatakse pealinna nime ja sa pead ära arvama, mis riigi pealinnaga on tegemist.");
-        System.out.println();
-        // Välimine tsükkel võimaldab mängu vale vastuse korral uuesti alustada
-        boolean mängKäib = true;
-
-        while (mängKäib) {
-            for (int i = 1; i <= 15; i++) {
-                System.out.println(i + ". küsimus:");
-                boolean õigeVastus = esitaKüsimus(sc);
-                System.out.println();
-
-                if (!õigeVastus) {
-                    System.out.println("Vastasid valesti. Alustame mängu uuesti!");
-                    alustaUuesti();
-                    // Kui vastus on vale, siis katkestab küsimuste küsimuse ja alustab uuesti
-                    break;
-                }
-            }
-            if (küsimusedOtsas()) {
-                System.out.println("Vastasid kõikidele küsimustele õigesti ja kogusid kokku " + punktid + " punkti!\uD83C\uDF89");
-                System.out.println();
-                // Kui kõikidele küsimustele on vastatud, siis paneb programmi kinni.
-                mängKäib = false;
-            }
-        }
-    }
-
-    // Kuvab küsimuse ja loeb kasutaja antud vastuse
-    private boolean esitaKüsimus(Scanner sc) {
-        Kusimus kusimus = looKüsimus();
-
-        System.out.println(kusimus.getKüsimuseTekst());
-
-        for (int i = 0; i < kusimus.getVariandid().size(); i++) {
-            System.out.println((i + 1) + ". " + kusimus.getVariandid().get(i).getRiigiNimi());
-        }
-        System.out.println("Sisesta vastuse number: ");
-
-        int vastus;
-        while (true) {
-            if (!sc.hasNextInt()) {
-                System.out.println("Palun sisesta number vahemikus 1-4.");
-                sc.next();
-                continue;
-            }
-
-            vastus = sc.nextInt();
-
-            if (vastus >= 1 && vastus <= 4) {
-                break;
-            }
-            System.out.println("Palun sisesta number vahemikus 1-4.");
-        }
-
-        if (kontrolliVastus(kusimus, vastus)) {
-            System.out.println("Õige!");
-            return true;
-        } else {
-            System.out.println("Vale! Õige vastus on hoopis " + kusimus.getÕigePealinn().getRiigiNimi());
-            System.out.println("Kogusid kokku " + punktid + " punkti!\uD83C\uDF89");
-            return false;
         }
     }
 
@@ -193,7 +112,7 @@ public class Mang {
     }
 
     // Alustab mängu vale vastuse korral uuesti
-    public void alustaUuesti() {
+    public void lähtestaMäng() {
         punktid = 0;
         küsimataPealinnad.clear();
         küsimataPealinnad.addAll(kõikPealinnad);

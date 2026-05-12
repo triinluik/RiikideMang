@@ -46,7 +46,7 @@ public class RiikideMangFX extends Application {
 
         uusMängNupp = new Button("Alusta uuesti");
         uusMängNupp.setVisible(false);
-        uusMängNupp.setOnAction(e -> alustaUutMängu());
+        uusMängNupp.setOnAction(e -> taaskäivitaMäng());
 
         režiimiValikNupp = new Button("Vali režiim");
         režiimiValikNupp.setVisible(false);
@@ -115,7 +115,7 @@ public class RiikideMangFX extends Application {
     private void kuvaReziimiValik() {
 
         // Lähtestab mängu andmed
-        mang.alustaUuesti();
+        mang.lähtestaMäng();
         kasVastatud = false;
         praeguneKusimus = null;
 
@@ -157,7 +157,7 @@ public class RiikideMangFX extends Application {
         juhendiLabel.setText("Vastata saab hiirega või klahvidega 1-4.");
         reziim = valitudReziim;
 
-        mang.alustaUuesti();
+        mang.lähtestaMäng();
         // Vastusenupud
         for (int i = 0; i < vastuseNupud.length; i++) {
 
@@ -176,9 +176,9 @@ public class RiikideMangFX extends Application {
     }
 
     // Alustab uue mängu
-    private void alustaUutMängu() {
+    private void taaskäivitaMäng() {
         // Lähtestab mängu andmed
-        mang.alustaUuesti();
+        mang.lähtestaMäng();
         kasVastatud = false;
         punktidLabel.setText("Punktid: 0");
         tagasisideLabel.setText("Vali õige vastus.");
