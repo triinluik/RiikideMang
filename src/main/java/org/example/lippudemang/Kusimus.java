@@ -4,29 +4,29 @@ import java.util.ArrayList;
 // Hoiab konkreetse küsimuse andmeid
 
 public class Kusimus {
-    private final Pealinn õigePealinn;
-    private final ArrayList<Pealinn> variandid;
+    private final Riik õigeRiik;
+    private final ArrayList<Riik> variandid;
     private final int õigeVastus;
 
     // Konstruktor
-    public Kusimus(Pealinn õigePealinn, ArrayList<Pealinn> variandid, int õigeVastus) {
-        this.õigePealinn = õigePealinn;
+    public Kusimus(Riik õigeRiik, ArrayList<Riik> variandid, int õigeVastus) {
+        this.õigeRiik = õigeRiik;
         this.variandid = variandid;
         this.õigeVastus = õigeVastus;
     }
 
     // Getterid
-    public Pealinn getÕigePealinn() {
-        return õigePealinn;
+    public Riik getÕigePealinn() {
+        return õigeRiik;
     }
 
-    public ArrayList<Pealinn> getVariandid() {
+    public ArrayList<Riik> getVariandid() {
         return variandid;
     }
 
     // Tagastab küsimuse teksti
     public String getKüsimuseTekst() {
-        return "Mis riigi pealinn on " + õigePealinn.getPealinn() + "?";
+        return "Mis riigi pealinn on " + õigeRiik.getPealinn() + "?";
     }
 
     // Kontrollib, kas kasutaja antud vastus on õige

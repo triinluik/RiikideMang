@@ -2,8 +2,6 @@ package org.example.lippudemang;
 
 // Mängu loogika
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,8 +10,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Mang {
-    private ArrayList<Pealinn> kõikPealinnad; //Kõik pealinnad
-    private final ArrayList<Pealinn> küsimataPealinnad; // Veel küsimata pealinnad
+    private ArrayList<Riik> kõikPealinnad; //Kõik pealinnad
+    private final ArrayList<Riik> küsimataPealinnad; // Veel küsimata pealinnad
     private int punktid;
     private final Random random;
     private static final String TULEMUSTE_FAIL = "tulemused.txt"; //Konstant
@@ -35,49 +33,53 @@ public class Mang {
 
     // Abimeetod, mis loeb pealinnad txt failist ja lisab need järjendisse
     private void lisaPealinnad() {
-        try (Scanner sc = new Scanner(new File("Pealinnad.txt"))) {
+        try (Scanner sc = new Scanner(Objects.requireNonNull(getClass().getResourceAsStream("/Pealinnad.txt")))) {
 
             while (sc.hasNextLine()) {
                 String rida = sc.nextLine();
 
                 String[] osad = rida.split(";");
 
-                String riik = osad[0];
-                String pealinn = osad[1];
+                if (osad.length != 3) {
+                    continue;
+                }
+                String riik = osad[0].trim();
+                String pealinn = osad[1].trim();
+                String riigiKood = osad[2].trim();
 
-                kõikPealinnad.add(new Pealinn(riik, pealinn));
+                kõikPealinnad.add(new Riik(riik, pealinn, riigiKood));
             }
 
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             System.out.println("Viga! Sellist faili ei leitud!");
         }
     }
 
     //Loob uue küsimuse isendi
     private Kusimus looKüsimus() {
-        Pealinn õigePealinn = valiJuhuslikPealinn();
-        ArrayList<Pealinn> variandid = looVariandid(õigePealinn);
+        Riik õigeRiik = valiJuhuslikPealinn();
+        ArrayList<Riik> variandid = looVariandid(õigeRiik);
         int õigeVastus = -1;
         for (int i = 0; i < variandid.size(); i++) {
-            if (variandid.get(i).getRiigiNimi().equals(õigePealinn.getRiigiNimi())) {
+            if (variandid.get(i).getRiigiNimi().equals(õigeRiik.getRiigiNimi())) {
                 õigeVastus = i + 1;
             }
         }
-        return new Kusimus(õigePealinn, variandid, õigeVastus);
+        return new Kusimus(õigeRiik, variandid, õigeVastus);
     }
 
     //Genereerib vastusevariandid
-    private ArrayList<Pealinn> looVariandid(Pealinn õigePealinn) {
-        ArrayList<Pealinn> pealinnKoopia = new ArrayList<>(kõikPealinnad);
-        pealinnKoopia.remove(õigePealinn);
-        Collections.shuffle(pealinnKoopia);
+    private ArrayList<Riik> looVariandid(Riik õigeRiik) {
+        ArrayList<Riik> riikKoopia = new ArrayList<>(kõikPealinnad);
+        riikKoopia.remove(õigeRiik);
+        Collections.shuffle(riikKoopia);
 
-        ArrayList<Pealinn> variandid = new ArrayList<>();
-        variandid.add(õigePealinn);
+        ArrayList<Riik> variandid = new ArrayList<>();
+        variandid.add(õigeRiik);
 
         int i = 0;
         while (variandid.size() < 4) {
-            variandid.add(pealinnKoopia.get(i));
+            variandid.add(riikKoopia.get(i));
             i++;
         }
         Collections.shuffle(variandid);
@@ -85,7 +87,7 @@ public class Mang {
     }
 
     // Valib juhusliku pealinna
-    private Pealinn valiJuhuslikPealinn() {
+    private Riik valiJuhuslikPealinn() {
         int indeks = random.nextInt(küsimataPealinnad.size());
         return küsimataPealinnad.remove(indeks);
     }
@@ -150,7 +152,7 @@ public class Mang {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Tulemuse salvestamine ebaõnnestus!");
+            System.out.println("Tulemuse salvestamine ebaõnnestus!" + e.getMessage());
         }
     }
 }
