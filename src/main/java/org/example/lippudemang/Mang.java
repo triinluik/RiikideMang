@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Mang {
-    private ArrayList<Riik> kõikPealinnad; //Kõik pealinnad
+    private final ArrayList<Riik> kõikPealinnad; //Kõik pealinnad
     private final ArrayList<Riik> küsimataPealinnad; // Veel küsimata pealinnad
     private int punktid;
     private final Random random;
@@ -26,7 +26,7 @@ public class Mang {
         lisaPealinnad();
         küsimataPealinnad.addAll(kõikPealinnad);
     }
-    // Getterid ja setterid
+    // Getter
     public int getPunktid() {
         return punktid;
     }

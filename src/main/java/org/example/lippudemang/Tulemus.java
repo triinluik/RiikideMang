@@ -26,6 +26,7 @@ public class Tulemus {
     public String tulemusFailireaks() {
         return aeg.format(VORMISTUS) + ";" + nimi + ";" + punktid + ";" + sekundid;
     }
+
     // Loob failireast Tulemuse objekti
     public static Tulemus failireastObjektiks(String rida) {
         String[] osad = rida.split(";");
@@ -37,6 +38,7 @@ public class Tulemus {
 
         return new Tulemus(nimi, punktid, aeg, sekundid);
     }
+
     // Tagastab tulemuse tekstina
     @Override
     public String toString() {
