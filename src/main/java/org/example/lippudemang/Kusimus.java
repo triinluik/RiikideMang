@@ -16,7 +16,7 @@ public class Kusimus {
     }
 
     // Getterid
-    public Riik getÕigePealinn() {
+    public Riik getÕigeRiik() {
         return õigeRiik;
     }
 

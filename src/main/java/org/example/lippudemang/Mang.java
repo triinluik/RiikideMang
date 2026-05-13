@@ -10,21 +10,21 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Mang {
-    private final ArrayList<Riik> kõikPealinnad; //Kõik pealinnad
-    private final ArrayList<Riik> küsimataPealinnad; // Veel küsimata pealinnad
+    private final ArrayList<Riik> kõikRiigid; //Kõik pealinnad
+    private final ArrayList<Riik> küsimataRiigid; // Veel küsimata pealinnad
     private int punktid;
     private final Random random;
     private static final String TULEMUSTE_FAIL = "tulemused.txt"; //Konstant
     private int sekundid;
 
     public Mang() {
-        kõikPealinnad = new ArrayList<>();
-        küsimataPealinnad = new ArrayList<>();
+        kõikRiigid = new ArrayList<>();
+        küsimataRiigid = new ArrayList<>();
         random = new Random();
 
         punktid = 0;
         lisaPealinnad();
-        küsimataPealinnad.addAll(kõikPealinnad);
+        küsimataRiigid.addAll(kõikRiigid);
     }
     // Getter
     public int getPunktid() {
@@ -47,7 +47,7 @@ public class Mang {
                 String pealinn = osad[1].trim();
                 String riigiKood = osad[2].trim();
 
-                kõikPealinnad.add(new Riik(riik, pealinn, riigiKood));
+                kõikRiigid.add(new Riik(riik, pealinn, riigiKood));
             }
 
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class Mang {
 
     //Loob uue küsimuse isendi
     private Kusimus looKüsimus() {
-        Riik õigeRiik = valiJuhuslikPealinn();
+        Riik õigeRiik = valiJuhuslikRiik();
         ArrayList<Riik> variandid = looVariandid(õigeRiik);
         int õigeVastus = -1;
         for (int i = 0; i < variandid.size(); i++) {
@@ -70,7 +70,7 @@ public class Mang {
 
     //Genereerib vastusevariandid
     private ArrayList<Riik> looVariandid(Riik õigeRiik) {
-        ArrayList<Riik> riikKoopia = new ArrayList<>(kõikPealinnad);
+        ArrayList<Riik> riikKoopia = new ArrayList<>(kõikRiigid);
         riikKoopia.remove(õigeRiik);
         Collections.shuffle(riikKoopia);
 
@@ -87,14 +87,14 @@ public class Mang {
     }
 
     // Valib juhusliku pealinna
-    private Riik valiJuhuslikPealinn() {
-        int indeks = random.nextInt(küsimataPealinnad.size());
-        return küsimataPealinnad.remove(indeks);
+    private Riik valiJuhuslikRiik() {
+        int indeks = random.nextInt(küsimataRiigid.size());
+        return küsimataRiigid.remove(indeks);
     }
 
     // Kontrollib, kas pealinnad järjendis on veel pealinnu
     public boolean küsimusedOtsas() {
-        return küsimataPealinnad.isEmpty();
+        return küsimataRiigid.isEmpty();
     }
 
     // Tagastab uue küsimuse objekti
@@ -117,8 +117,8 @@ public class Mang {
     // Alustab mängu vale vastuse korral uuesti
     public void lähtestaMäng() {
         punktid = 0;
-        küsimataPealinnad.clear();
-        küsimataPealinnad.addAll(kõikPealinnad);
+        küsimataRiigid.clear();
+        küsimataRiigid.addAll(kõikRiigid);
     }
     //Salvestab aja
      public void salvestaAeg(int sekundid) {

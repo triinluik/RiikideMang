@@ -257,7 +257,7 @@ public class RiikideMangFX extends Application {
             ajavõtt.stop();
             tagasisideLabel.setText(
                     "Vale! Õige vastus oli: "
-                            + praeguneKusimus.getÕigePealinn().getRiigiNimi()
+                            + praeguneKusimus.getÕigeRiik().getRiigiNimi()
             );
 
             keelaVastuseNupud(true);
