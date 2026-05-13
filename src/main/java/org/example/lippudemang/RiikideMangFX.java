@@ -1,5 +1,7 @@
 package org.example.lippudemang;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.Optional;
 
@@ -58,11 +61,10 @@ public class RiikideMangFX extends Application {
         // Paigutab nupud ruudustikuna
         GridPane nuppudePaneel = new GridPane();
         // Lisab aja tähise ekraanile
-        ajavõtt= new Timeline(
-                new KeyFrame(Duration.seconds(1), e -> {
-                    sekundid++;
-                    aeg.setText("Aeg: " + sekundid);
-                })
+        ajavõtt = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            sekundid++;
+            aeg.setText("Aeg: " + sekundid);
+        })
         );
         ajavõtt.setCycleCount(Timeline.INDEFINITE);
         nuppudePaneel.setHgap(10);
@@ -92,7 +94,7 @@ public class RiikideMangFX extends Application {
                 nuppudePaneel,
                 punktidLabel,
                 tagasisideLabel,
-                mänguAlustamiseNupud
+                mänguAlustamiseNupud,
                 aeg
         );
         mänguAlustamiseNupud.getChildren().addAll(
@@ -288,7 +290,7 @@ public class RiikideMangFX extends Application {
     // Meetod tulemuse salvestamiseks
     private void salvestaTulemus() {
         String nimi = küsiNimi();
-        int kestus=sekundid;
+        int kestus = sekundid;
         if (nimi != null) {
             mang.salvestaAeg(kestus);
             mang.salvestaPunktid(nimi);

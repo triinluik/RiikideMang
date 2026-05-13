@@ -7,11 +7,11 @@ public class Tulemus {
     private final String nimi;
     private final int punktid;
     private final LocalDateTime aeg;
-    private int sekundid;
+    private final int sekundid;
     private static final DateTimeFormatter VORMISTUS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); // Konstant
 
     // Konstruktor
-    public Tulemus(String nimi, int punktid, LocalDateTime aeg) {
+    public Tulemus(String nimi, int punktid, LocalDateTime aeg, int sekundid) {
         this.nimi = nimi;
         this.punktid = punktid;
         this.aeg = aeg;
