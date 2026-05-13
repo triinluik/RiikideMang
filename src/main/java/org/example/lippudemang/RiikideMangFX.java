@@ -12,7 +12,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.Optional;
 
 // Uus UI'ga peaklass
@@ -33,9 +32,8 @@ public class RiikideMangFX extends Application {
     private Button uusMängNupp;
     private Button režiimiValikNupp;
     private Timeline ajavõtt;
-    int sekundid = 0;
-
-
+    private int sekundid = 0;
+    
     @Override
     public void start(Stage lava) {
         // Loob uue mängu
@@ -160,8 +158,7 @@ public class RiikideMangFX extends Application {
         vastuseNupud[1].setOnAction(e -> alustaMäng(ManguReziim.LIPUD));
 
         // Peidab alumised juhtnupud
-        uusMängNupp.setVisible(false);
-        režiimiValikNupp.setVisible(false);
+        kuvaJuhtnupud(false);
     }
 
     // Käivitab mängu valitud režiimis
@@ -174,14 +171,13 @@ public class RiikideMangFX extends Application {
         mang.lähtestaMäng();
         sekundid = 0;
         ajavõtt.play();
+
+        kuvaVastuseNupud(true);
+        keelaVastuseNupud(false);
+
         // Vastusenupud
         for (int i = 0; i < vastuseNupud.length; i++) {
-
             final int vastus = i + 1;
-
-            vastuseNupud[i].setVisible(true);
-            vastuseNupud[i].setDisable(false);
-
             vastuseNupud[i].setOnAction(e -> kontrolliVastus(vastus));
         }
 
@@ -201,17 +197,10 @@ public class RiikideMangFX extends Application {
         sekundid = 0;
         ajavõtt.play();
 
-        // Peidab alumised nupud
-        uusMängNupp.setVisible(false);
-        uusMängNupp.setDisable(false);
-        režiimiValikNupp.setVisible(false);
-        režiimiValikNupp.setDisable(false);
-
-        // Kuvab vastusenupud
-        for (Button nupp : vastuseNupud) {
-            nupp.setDisable(false);
-            nupp.setVisible(true);
-        }
+        // Peidab juhtnupud
+        kuvaJuhtnupud(false);
+        kuvaVastuseNupud(true);
+        keelaVastuseNupud(false);
 
         kuvaUusKüsimus();
     }
@@ -228,16 +217,10 @@ public class RiikideMangFX extends Application {
             tagasisideLabel.setText("Mäng sai läbi. Kogusid kokku " + mang.getPunktid() + " punkti.");
             // Kutsub välja meetodi tulemuse salvestamiseks
             salvestaTulemus();
-            // Näitab uue mängu nuppu
-            uusMängNupp.setDisable(false);
-            uusMängNupp.setVisible(true);
-            //Näitab režiimivaliku nuppu
-            režiimiValikNupp.setDisable(false);
-            režiimiValikNupp.setVisible(true);
-            // Keelab nupud, sest rohkem pole neid vaja
-            for (Button nupp : vastuseNupud) {
-                nupp.setVisible(false);
-            }
+            // Näitab juhtnuppe ja peidab vastusenupud
+            kuvaJuhtnupud(true);
+            kuvaVastuseNupud(false);
+            
             return;
         }
         //Kuvad küsimuse teksti olenevalt mängu režiimist
@@ -276,14 +259,13 @@ public class RiikideMangFX extends Application {
                     "Vale! Õige vastus oli: "
                             + praeguneKusimus.getÕigePealinn().getRiigiNimi()
             );
-            for (Button nupp : vastuseNupud) {
-                nupp.setDisable(true);
-            }
+
+            keelaVastuseNupud(true);
+
             // Kutsub välja meetodi tulemuse salvestamiseks
             salvestaTulemus();
 
-            uusMängNupp.setVisible(true);
-            režiimiValikNupp.setVisible(true);
+            kuvaJuhtnupud(true);
         }
     }
 
@@ -310,5 +292,25 @@ public class RiikideMangFX extends Application {
             return tulemus.get().trim();
         }
         return null;
+    }
+
+    // Kuvab või peidab kõik vastusenupud
+    private void kuvaVastuseNupud(boolean kuva) {
+        for (Button nupp : vastuseNupud) {
+            nupp.setVisible(kuva);
+        }
+    }
+
+    // Lubab või keelab kõik vastusenupud
+    private void keelaVastuseNupud(boolean keela) {
+        for (Button nupp : vastuseNupud) {
+            nupp.setDisable(keela);
+        }
+    }
+
+    // Kuvab või peidab uue mängu ja režiimivaliku nupu
+    private void kuvaJuhtnupud(boolean kuva) {
+        uusMängNupp.setVisible(kuva);
+        režiimiValikNupp.setVisible(kuva);
     }
 }
