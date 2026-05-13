@@ -7,6 +7,7 @@ public class Tulemus {
     private final String nimi;
     private final int punktid;
     private final LocalDateTime aeg;
+    private int sekundid;
     private static final DateTimeFormatter VORMISTUS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); // Konstant
 
     // Konstruktor
@@ -14,6 +15,7 @@ public class Tulemus {
         this.nimi = nimi;
         this.punktid = punktid;
         this.aeg = aeg;
+        this.sekundid = sekundid;
     }
     // Getter
     public int getPunktid() {
@@ -22,7 +24,7 @@ public class Tulemus {
 
     // Teisendab tulemuse failireaks
     public String tulemusFailireaks() {
-        return aeg.format(VORMISTUS) + ";" + nimi + ";" + punktid;
+        return aeg.format(VORMISTUS) + ";" + nimi + ";" + punktid + ";" + sekundid;
     }
     // Loob failireast Tulemuse objekti
     public static Tulemus failireastObjektiks(String rida) {
@@ -31,12 +33,13 @@ public class Tulemus {
         LocalDateTime aeg = LocalDateTime.parse(osad[0], VORMISTUS);
         String nimi = osad[1];
         int punktid = Integer.parseInt(osad[2]);
+        int sekundid = Integer.parseInt(osad[3]);
 
-        return new Tulemus(nimi, punktid, aeg);
+        return new Tulemus(nimi, punktid, aeg, sekundid);
     }
     // Tagastab tulemuse tekstina
     @Override
     public String toString() {
-        return nimi + " - " + punktid + " punkti (" + aeg + ")";
+        return nimi + " - " + punktid + " punkti (" + aeg + ")" + sekundid;
     }
 }
