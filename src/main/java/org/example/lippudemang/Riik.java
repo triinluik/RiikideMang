@@ -31,11 +31,11 @@ public class Riik {
     }
     // Tagastab riigi lipu
     public Image getLipp() {
-        String tee = "/lipud/" + riigiKood + ".png";
+        String tee = "/EUlipud/" + riigiKood + ".png";
         InputStream sisend = getClass().getResourceAsStream(tee);
 
         if (sisend == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Lippu ei leitud: " + tee);
         }
         return new Image(sisend);
     }

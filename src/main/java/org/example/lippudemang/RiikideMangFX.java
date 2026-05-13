@@ -7,11 +7,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import java.util.Optional;
 
 // Uus UI'ga peaklass
@@ -20,6 +22,7 @@ public class RiikideMangFX extends Application {
 
     private Mang mang; //Mängu loogika objekt
     private Kusimus praeguneKusimus; // Hetkel kuvatav küsimus
+    private ImageView lipuPilt;
     private boolean kasVastatud; // Kontrollimaks, et ainult üks klaviatuuri või ekraanisündmus läheb kirja
 
     // UI komponendid
@@ -33,18 +36,26 @@ public class RiikideMangFX extends Application {
     private Button režiimiValikNupp;
     private Timeline ajavõtt;
     private int sekundid = 0;
-    
+
     @Override
     public void start(Stage lava) {
         // Loob uue mängu
         mang = new Mang();
         kasVastatud = false; //Hetkel veel pole küsimusele vastatud
+
         // Loob tekstiväljad
         juhendiLabel = new Label();
         küsimusLabel = new Label();
         punktidLabel = new Label("Punktid: 0");
         Label aeg = new Label("0");
         tagasisideLabel = new Label();
+
+        // Loob lipu pildi
+        lipuPilt = new ImageView();
+        lipuPilt.setFitWidth(180);
+        lipuPilt.setPreserveRatio(true);
+        lipuPilt.setVisible(false);
+
         // loob massiivi nelja nupuga
         vastuseNupud = new Button[4];
 
@@ -58,6 +69,7 @@ public class RiikideMangFX extends Application {
 
         // Paigutab nupud ruudustikuna
         GridPane nuppudePaneel = new GridPane();
+
         // Lisab aja tähise ekraanile
         ajavõtt = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             sekundid++;
@@ -67,6 +79,7 @@ public class RiikideMangFX extends Application {
         ajavõtt.setCycleCount(Timeline.INDEFINITE);
         nuppudePaneel.setHgap(10);
         nuppudePaneel.setVgap(10);
+
         // Loob vastusenupud
         for (int i = 0; i < vastuseNupud.length; i++) {
             // Vastuse number
@@ -80,15 +93,18 @@ public class RiikideMangFX extends Application {
             // Lisab nupu gridpane'i
             nuppudePaneel.add(vastuseNupud[i], i % 2, i / 2);
         }
+
         // Paigutab elemendid vertikaalselt
         VBox juur = new VBox(15);
         HBox mänguAlustamiseNupud = new HBox(10);
         juur.setStyle("-fx-padding: 20;"); //ääris
+
         // Lisab elemendid aknasse
         juur.getChildren().addAll(
                 new Label("Riikide mäng"),
                 juhendiLabel,
                 küsimusLabel,
+                lipuPilt,
                 nuppudePaneel,
                 punktidLabel,
                 tagasisideLabel,
@@ -100,7 +116,7 @@ public class RiikideMangFX extends Application {
                 režiimiValikNupp
         );
 
-        Scene stseen = new Scene(juur, 500, 350);
+        Scene stseen = new Scene(juur, 400, 480);
 
         // Klaviatuuriga vastamine nagu terminalis varem
         stseen.setOnKeyPressed(e -> {
@@ -130,6 +146,8 @@ public class RiikideMangFX extends Application {
         mang.lähtestaMäng();
         kasVastatud = false;
         praeguneKusimus = null;
+
+        lipuPilt.setVisible(false);
 
         punktidLabel.setText("Punktid: 0");
         tagasisideLabel.setText("");
@@ -210,6 +228,7 @@ public class RiikideMangFX extends Application {
         // Võtab mängust järgmise küsimuse
         kasVastatud = false;
         praeguneKusimus = mang.järgmineKüsimus();
+
         // Juhul kui kõik küsimused on vastatud
         if (praeguneKusimus == null) {
             ajavõtt.stop();
@@ -220,15 +239,19 @@ public class RiikideMangFX extends Application {
             // Näitab juhtnuppe ja peidab vastusenupud
             kuvaJuhtnupud(true);
             kuvaVastuseNupud(false);
-            
+
             return;
         }
+
         //Kuvad küsimuse teksti olenevalt mängu režiimist
         if (reziim == ManguReziim.PEALINNAD) {
+            lipuPilt.setVisible(false);
             küsimusLabel.setText(praeguneKusimus.getKüsimuseTekst());
 
         } else if (reziim == ManguReziim.LIPUD) {
             küsimusLabel.setText("Mis riigi lipuga on tegemist?");
+            lipuPilt.setImage(praeguneKusimus.getÕigeRiik().getLipp());
+            lipuPilt.setVisible(true);
         }
         //Kuvad vastusevariandid nuppudel
         for (int i = 0; i < vastuseNupud.length; i++) {
