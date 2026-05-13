@@ -17,6 +17,7 @@ public class Mang {
     private int punktid;
     private final Random random;
     private static final String TULEMUSTE_FAIL = "tulemused.txt"; //Konstant
+    private int sekundid;
 
     public Mang() {
         kõikPealinnad = new ArrayList<>();
@@ -117,6 +118,10 @@ public class Mang {
         küsimataPealinnad.clear();
         küsimataPealinnad.addAll(kõikPealinnad);
     }
+    //Salvestab aja
+     public void salvestaAeg(int sekundid) {
+        this.sekundid=sekundid;
+    }
 
     // Salvestab punktid faili
     public void salvestaPunktid(String nimi) {
@@ -135,7 +140,7 @@ public class Mang {
                 }
             }
             //Lisab uue tulemuse
-            tulemused.add(new Tulemus(nimi, punktid, LocalDateTime.now()));
+            tulemused.add(new Tulemus(nimi, punktid, LocalDateTime.now(), sekundid));
             // Sorteerib punktide järgi kahanevalt
             tulemused.sort(Comparator.comparingInt(Tulemus::getPunktid).reversed());
             // Kirjutab tulemused faili
