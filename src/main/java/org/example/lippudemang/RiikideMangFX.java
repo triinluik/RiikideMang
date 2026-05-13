@@ -29,6 +29,8 @@ public class RiikideMangFX extends Application {
     private Button[] vastuseNupud; //Nupud vastusevariantidega
     private Button uusMängNupp;
     private Button režiimiValikNupp;
+    private Timeline ajavõtt;
+    int sekundid = 0;
 
 
     @Override
@@ -40,6 +42,7 @@ public class RiikideMangFX extends Application {
         juhendiLabel = new Label();
         küsimusLabel = new Label();
         punktidLabel = new Label("Punktid: 0");
+        Label aeg = new Label("0");
         tagasisideLabel = new Label();
         // loob massiivi nelja nupuga
         vastuseNupud = new Button[4];
@@ -54,6 +57,14 @@ public class RiikideMangFX extends Application {
 
         // Paigutab nupud ruudustikuna
         GridPane nuppudePaneel = new GridPane();
+        // Lisab aja tähise ekraanile
+        ajavõtt= new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    sekundid++;
+                    aeg.setText("Aeg: " + sekundid);
+                })
+        );
+        ajavõtt.setCycleCount(Timeline.INDEFINITE);
         nuppudePaneel.setHgap(10);
         nuppudePaneel.setVgap(10);
         // Loob vastusenupud
@@ -82,6 +93,7 @@ public class RiikideMangFX extends Application {
                 punktidLabel,
                 tagasisideLabel,
                 mänguAlustamiseNupud
+                aeg
         );
         mänguAlustamiseNupud.getChildren().addAll(
                 uusMängNupp,
@@ -158,6 +170,8 @@ public class RiikideMangFX extends Application {
         reziim = valitudReziim;
 
         mang.lähtestaMäng();
+        sekundid = 0;
+        ajavõtt.play();
         // Vastusenupud
         for (int i = 0; i < vastuseNupud.length; i++) {
 
@@ -182,6 +196,8 @@ public class RiikideMangFX extends Application {
         kasVastatud = false;
         punktidLabel.setText("Punktid: 0");
         tagasisideLabel.setText("Vali õige vastus.");
+        sekundid = 0;
+        ajavõtt.play();
 
         // Peidab alumised nupud
         uusMängNupp.setVisible(false);
@@ -205,6 +221,7 @@ public class RiikideMangFX extends Application {
         praeguneKusimus = mang.järgmineKüsimus();
         // Juhul kui kõik küsimused on vastatud
         if (praeguneKusimus == null) {
+            ajavõtt.stop();
             küsimusLabel.setText("Palju õnne, vastasid kõikidele küsimustele õigesti!");
             tagasisideLabel.setText("Mäng sai läbi. Kogusid kokku " + mang.getPunktid() + " punkti.");
             // Kutsub välja meetodi tulemuse salvestamiseks
@@ -252,6 +269,7 @@ public class RiikideMangFX extends Application {
             // Kui oli õige, siis kuvab järgmise küsimuse
             kuvaUusKüsimus();
         } else {
+            ajavõtt.stop();
             tagasisideLabel.setText(
                     "Vale! Õige vastus oli: "
                             + praeguneKusimus.getÕigePealinn().getRiigiNimi()
@@ -270,8 +288,9 @@ public class RiikideMangFX extends Application {
     // Meetod tulemuse salvestamiseks
     private void salvestaTulemus() {
         String nimi = küsiNimi();
-
+        int kestus=sekundid;
         if (nimi != null) {
+            mang.salvestaAeg(kestus);
             mang.salvestaPunktid(nimi);
         }
     }
