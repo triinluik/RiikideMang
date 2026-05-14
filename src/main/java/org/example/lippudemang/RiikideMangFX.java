@@ -47,14 +47,14 @@ public class RiikideMangFX extends Application {
         juhendiLabel = new Label();
         küsimusLabel = new Label();
         punktidLabel = new Label("Punktid: 0");
-        Label aeg = new Label("0");
+        Label aeg = new Label("Aeg: 0");
         tagasisideLabel = new Label();
 
         // Loob lipu pildi
         lipuPilt = new ImageView();
         lipuPilt.setFitWidth(180);
         lipuPilt.setPreserveRatio(true);
-        lipuPilt.setVisible(false);
+        kuvaLipp(false);
 
         // loob massiivi nelja nupuga
         vastuseNupud = new Button[4];
@@ -147,7 +147,7 @@ public class RiikideMangFX extends Application {
         kasVastatud = false;
         praeguneKusimus = null;
 
-        lipuPilt.setVisible(false);
+        kuvaLipp(false);
 
         punktidLabel.setText("Punktid: 0");
         tagasisideLabel.setText("");
@@ -245,13 +245,13 @@ public class RiikideMangFX extends Application {
 
         //Kuvad küsimuse teksti olenevalt mängu režiimist
         if (reziim == ManguReziim.PEALINNAD) {
-            lipuPilt.setVisible(false);
+            kuvaLipp(false);
             küsimusLabel.setText(praeguneKusimus.getKüsimuseTekst());
 
         } else if (reziim == ManguReziim.LIPUD) {
             küsimusLabel.setText("Mis riigi lipuga on tegemist?");
             lipuPilt.setImage(praeguneKusimus.getÕigeRiik().getLipp());
-            lipuPilt.setVisible(true);
+            kuvaLipp(true);
         }
         //Kuvad vastusevariandid nuppudel
         for (int i = 0; i < vastuseNupud.length; i++) {
@@ -277,10 +277,9 @@ public class RiikideMangFX extends Application {
             // Kui oli õige, siis kuvab järgmise küsimuse
             kuvaUusKüsimus();
         } else {
+            //Lõpetab stopperi
             ajavõtt.stop();
-            tagasisideLabel.setText(
-                    "Vale! Õige vastus oli: "
-                            + praeguneKusimus.getÕigeRiik().getRiigiNimi()
+            tagasisideLabel.setText("Vale! Õige vastus oli: " + praeguneKusimus.getÕigeRiik().getRiigiNimi()
             );
 
             keelaVastuseNupud(true);
@@ -315,6 +314,12 @@ public class RiikideMangFX extends Application {
             return tulemus.get().trim();
         }
         return null;
+    }
+
+    // Kuvab või peidab lipu ning eemaldab peidetud lipu paigutusest
+    private void kuvaLipp(boolean kuva) {
+        lipuPilt.setVisible(kuva);
+        lipuPilt.setManaged(kuva);
     }
 
     // Kuvab või peidab kõik vastusenupud

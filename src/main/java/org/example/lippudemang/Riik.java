@@ -29,6 +29,7 @@ public class Riik {
     public String getRiigiKood() {
         return riigiKood;
     }
+
     // Tagastab riigi lipu
     public Image getLipp() {
         String tee = "/EUlipud/" + riigiKood + ".png";
@@ -39,6 +40,7 @@ public class Riik {
         }
         return new Image(sisend);
     }
+
     // toString meetod
     public String toString() {
         return riigiNimi + " " + pealinn;
