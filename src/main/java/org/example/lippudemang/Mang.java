@@ -17,6 +17,7 @@ public class Mang {
     private static final String TULEMUSTE_FAIL = "tulemused.txt"; //Konstant
     private int sekundid;
 
+    // Konstruktor
     public Mang() {
         kõikRiigid = new ArrayList<>();
         küsimataRiigid = new ArrayList<>();
@@ -26,6 +27,7 @@ public class Mang {
         lisaPealinnad();
         küsimataRiigid.addAll(kõikRiigid);
     }
+
     // Getter
     public int getPunktid() {
         return punktid;
@@ -86,13 +88,13 @@ public class Mang {
         return variandid;
     }
 
-    // Valib juhusliku pealinna
+    // Valib juhusliku riigi
     private Riik valiJuhuslikRiik() {
         int indeks = random.nextInt(küsimataRiigid.size());
         return küsimataRiigid.remove(indeks);
     }
 
-    // Kontrollib, kas pealinnad järjendis on veel pealinnu
+    // Kontrollib, kas riikide järjendis on veel riike
     public boolean küsimusedOtsas() {
         return küsimataRiigid.isEmpty();
     }
@@ -120,9 +122,10 @@ public class Mang {
         küsimataRiigid.clear();
         küsimataRiigid.addAll(kõikRiigid);
     }
+
     //Salvestab aja
-     public void salvestaAeg(int sekundid) {
-        this.sekundid=sekundid;
+    public void salvestaAeg(int sekundid) {
+        this.sekundid = sekundid;
     }
 
     // Salvestab punktid faili
@@ -134,7 +137,7 @@ public class Mang {
             if (Files.exists(Paths.get(TULEMUSTE_FAIL))) {
                 // Loeb kõik read
                 List<String> read = Files.readAllLines(Paths.get(TULEMUSTE_FAIL));
-               // Teeb ridadest Tulemus objektid
+                // Teeb ridadest Tulemus objektid
                 for (String rida : read) {
                     if (!rida.isBlank()) {
                         tulemused.add(Tulemus.failireastObjektiks(rida));

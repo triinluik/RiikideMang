@@ -205,7 +205,7 @@ public class RiikideMangFX extends Application {
         kuvaUusKüsimus();
     }
 
-    // Alustab uue mängu
+    // Alustab mängu uuesti
     private void taaskäivitaMäng() {
         // Lähtestab mängu andmed
         mang.lähtestaMäng();
@@ -233,7 +233,7 @@ public class RiikideMangFX extends Application {
         if (praeguneKusimus == null) {
             ajavõtt.stop();
             küsimusLabel.setText("Palju õnne, vastasid kõikidele küsimustele õigesti!");
-            tagasisideLabel.setText("Mäng sai läbi. Kogusid kokku " + mang.getPunktid() + " punkti.");
+            tagasisideLabel.setText("Mäng sai läbi. Kogusid kokku " + mang.getPunktid() + " punkti ajaga " + sekundid + " sekundit.");
             // Kutsub välja meetodi tulemuse salvestamiseks
             salvestaTulemus();
             // Näitab juhtnuppe ja peidab vastusenupud
